@@ -1,8 +1,6 @@
 package com.pablo.binarysearchtree;
 
 
-import java.lang.management.GarbageCollectorMXBean;
-
 public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
     private Tree<K,V> parent;
     private Tree<K,V> left;
@@ -23,7 +21,7 @@ public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
             return null;
     }
 
-    private Tree<K, V> lookupNode(Tree<K,V> tree, K key){
+    protected Tree<K, V> lookupNode(Tree<K,V> tree, K key){
         Tree<K,V> u = tree;
         while(u != null && !(u.getKey().equals(key))){
             if(u.compareTo(key) > 0)
@@ -34,21 +32,21 @@ public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
         return u;
     }
 
-    public Tree<K,V> min(Tree<K,V> tree){
+    protected Tree<K,V> min(Tree<K, V> tree){
         Tree<K,V> temp = tree;
         while(temp.getLeft() != null)
             temp = temp.getLeft();
         return temp;
     }
 
-    public Tree<K,V> max(Tree<K,V> tree){
+    protected Tree<K,V> max(Tree<K, V> tree){
         Tree<K,V> temp = tree;
         while(temp.getRight() != null)
             temp = temp.getRight();
         return temp;
     }
 
-    public Tree<K,V> successorNode(Tree<K,V> tree){
+    protected Tree<K,V> successorNode(Tree<K, V> tree){
         if(tree == null)
             return tree;
         if(tree.getRight() != null)
@@ -63,7 +61,7 @@ public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
         }
     }
 
-    public Tree<K,V> predecessorNode(Tree<K,V> tree){
+    protected Tree<K,V> predecessorNode(Tree<K, V> tree){
         if(tree == null)
             return tree;
         if(tree.getLeft() != null)
@@ -78,7 +76,7 @@ public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
         }
     }
 
-    private void link(Tree<K,V> parent, Tree<K,V> u, K key){
+    protected void link(Tree<K,V> parent, Tree<K,V> u, K key){
         if(u!=null)
             u.setParent(parent);
         if(parent != null){
@@ -89,7 +87,7 @@ public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
         }
     }
 
-    private Tree<K,V> insertNode(Tree<K,V> tree, K key, V value){
+    protected Tree<K,V> insertNode(Tree<K,V> tree, K key, V value){
         Tree<K,V> parent = null;
         Tree<K,V> u = tree;
         while((u != null) && !(u.getKey().equals(key))){
@@ -111,7 +109,7 @@ public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
         insertNode(this, key, value);
     }
 
-    private Tree<K,V> removeNode(Tree<K,V> tree, K key){
+    protected Tree<K,V> removeNode(Tree<K,V> tree, K key){
         Tree<K,V> temp = lookupNode(tree, key);
         if(temp != null){
             if(temp.getLeft() == null && temp.getRight() == null){
