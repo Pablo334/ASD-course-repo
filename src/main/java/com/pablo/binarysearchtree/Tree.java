@@ -106,7 +106,7 @@ public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
     }
 
     public void insert(K key, V value){
-        insertNode(this, key, value);
+        insertNode(getRoot(this), key, value);
     }
 
     protected Tree<K,V> removeNode(Tree<K,V> tree, K key){

@@ -10,47 +10,12 @@ public class RedBlackTree<K extends Comparable<K>, V> extends Tree<K,V> {
         this.color=true;
     }
 
-    public boolean isRed(){
+    private boolean isRed(){
         return color;
     }
 
     private void changeColor(boolean newColor){
         this.color = newColor;
-    }
-
-    private static<K extends Comparable<K>,V> RedBlackTree<K,V> rotateLeft(RedBlackTree<K,V> tree){
-        RedBlackTree<K,V> temp = (RedBlackTree<K,V>)tree.getRight();
-        RedBlackTree<K,V> parent = (RedBlackTree<K,V>)tree.getParent();
-        tree.setRight(temp.getLeft());
-        if(temp.getLeft() != null)
-            temp.getLeft().setParent(tree);
-        temp.setLeft(tree);
-        tree.setParent(temp);
-        temp.setParent(parent);
-        if(parent != null){
-            if(parent.getLeft()==tree)
-                parent.setLeft(temp);
-            else
-                parent.setRight(temp);
-        }
-        return temp;
-    }
-
-    private static<K extends Comparable<K>,V> RedBlackTree<K,V> rotateRight(RedBlackTree<K,V> tree){
-        RedBlackTree<K,V> temp = (RedBlackTree<K,V>)tree.getLeft();
-        RedBlackTree<K,V> parent = (RedBlackTree<K,V>)tree.getParent();
-        tree.setLeft(temp.getRight());
-        if(temp.getRight()!=null)
-            temp.getRight().setParent(tree);
-        temp.setRight(tree);
-        tree.setParent(temp);
-        if(parent != null){
-            if(parent.getLeft()==tree)
-                parent.setLeft(temp);
-            else
-                parent.setRight(temp);
-        }
-        return temp;
     }
 
     @Override
@@ -116,5 +81,40 @@ public class RedBlackTree<K extends Comparable<K>, V> extends Tree<K,V> {
         String temp = super.toString();
         temp = temp.substring(0, temp.length()-1);
         return temp + ", Color:" + ((this.isRed())? "RED)" : "BLACK)");
+    }
+
+    private static<K extends Comparable<K>,V> RedBlackTree<K,V> rotateLeft(RedBlackTree<K,V> tree){
+        RedBlackTree<K,V> temp = (RedBlackTree<K,V>)tree.getRight();
+        RedBlackTree<K,V> parent = (RedBlackTree<K,V>)tree.getParent();
+        tree.setRight(temp.getLeft());
+        if(temp.getLeft() != null)
+            temp.getLeft().setParent(tree);
+        temp.setLeft(tree);
+        tree.setParent(temp);
+        temp.setParent(parent);
+        if(parent != null){
+            if(parent.getLeft()==tree)
+                parent.setLeft(temp);
+            else
+                parent.setRight(temp);
+        }
+        return temp;
+    }
+
+    private static<K extends Comparable<K>,V> RedBlackTree<K,V> rotateRight(RedBlackTree<K,V> tree){
+        RedBlackTree<K,V> temp = (RedBlackTree<K,V>)tree.getLeft();
+        RedBlackTree<K,V> parent = (RedBlackTree<K,V>)tree.getParent();
+        tree.setLeft(temp.getRight());
+        if(temp.getRight()!=null)
+            temp.getRight().setParent(tree);
+        temp.setRight(tree);
+        tree.setParent(temp);
+        if(parent != null){
+            if(parent.getLeft()==tree)
+                parent.setLeft(temp);
+            else
+                parent.setRight(temp);
+        }
+        return temp;
     }
 }
