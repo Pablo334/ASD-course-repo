@@ -10,7 +10,7 @@ public class RedBlackTree<K extends Comparable<K>, V> extends Tree<K,V> {
         this.color=true;
     }
 
-    private boolean isRed(){
+    public boolean isRed(){
         return color;
     }
 
@@ -18,7 +18,7 @@ public class RedBlackTree<K extends Comparable<K>, V> extends Tree<K,V> {
         this.color = newColor;
     }
 
-    private RedBlackTree<K,V> rotateLeft(RedBlackTree<K,V> tree){
+    private static<K extends Comparable<K>,V> RedBlackTree<K,V> rotateLeft(RedBlackTree<K,V> tree){
         RedBlackTree<K,V> temp = (RedBlackTree<K,V>)tree.getRight();
         RedBlackTree<K,V> parent = (RedBlackTree<K,V>)tree.getParent();
         tree.setRight(temp.getLeft());
@@ -36,7 +36,7 @@ public class RedBlackTree<K extends Comparable<K>, V> extends Tree<K,V> {
         return temp;
     }
 
-    private RedBlackTree<K,V> rotateRight(RedBlackTree<K,V> tree){
+    private static<K extends Comparable<K>,V> RedBlackTree<K,V> rotateRight(RedBlackTree<K,V> tree){
         RedBlackTree<K,V> temp = (RedBlackTree<K,V>)tree.getLeft();
         RedBlackTree<K,V> parent = (RedBlackTree<K,V>)tree.getParent();
         tree.setLeft(temp.getRight());
@@ -53,12 +53,13 @@ public class RedBlackTree<K extends Comparable<K>, V> extends Tree<K,V> {
         return temp;
     }
 
-    private RedBlackTree<K,V> insertNode(RedBlackTree<K,V> tree, K key, V value){
-        RedBlackTree<K,V> parent = null;
-        RedBlackTree<K,V> u = tree;
+    @Override
+    protected Tree<K,V> insertNode(Tree<K,V> tree, K key, V value){
+        Tree<K,V> parent = null;
+        Tree<K,V> u = tree;
         while((u != null) && !(u.getKey().equals(key))){
             parent = u;
-            u = (RedBlackTree<K,V>) (u.compareTo(key)<0 ? u.getRight() : u.getLeft());
+            u = u.compareTo(key)<0 ? u.getRight() : u.getLeft();
         }
         if(u!=null && u.getKey().equals(key)){
             u.setValue(value);
@@ -73,6 +74,47 @@ public class RedBlackTree<K extends Comparable<K>, V> extends Tree<K,V> {
     }
 
     private void balanceInsert(RedBlackTree<K,V> tree){
+        tree.changeColor(true);
+        while(tree != null){
+            RedBlackTree<K,V> parent = (RedBlackTree<K,V>)tree.getParent();
+            RedBlackTree<K,V> grandpa = ((parent!=null)? (RedBlackTree<K,V>)parent.getParent() : null);
+            RedBlackTree<K,V> uncle = (grandpa == null)? null : (RedBlackTree<K,V>)((grandpa.getLeft()==parent)? grandpa.getRight() : grandpa.getLeft());
+            if(parent == null){
+                tree.changeColor(false);
+                tree = null;
+            }else if(!parent.isRed()){
+                tree = null;
+            }else if((uncle != null) && (uncle.isRed())){
+                parent.changeColor(false);
+                uncle.changeColor(false);
+                grandpa.changeColor(true);
+                tree = grandpa;
+            }else{
+                if((grandpa != null) && (tree == parent.getRight()) && (parent == grandpa.getLeft())){
+                    rotateLeft(parent);
+                    tree = parent;
+                }else if((grandpa != null) && (tree == parent.getLeft()) && (parent == grandpa.getRight())){
+                    rotateRight(parent);
+                    tree = parent;
+                }else{
+                    if((grandpa != null) && (tree == parent.getLeft()) && (parent== grandpa.getLeft())){
+                        rotateRight(grandpa);
+                    }else if((grandpa != null) && (tree == parent.getRight()) && (parent == grandpa.getRight())){
+                        rotateLeft(grandpa);
+                    }
+                    parent.changeColor(false);
+                    if(grandpa != null)
+                        grandpa.changeColor(true);
+                    tree = null;
+                }
+            }
+        }
+    }
 
+    @Override
+    public String toString(){
+        String temp = super.toString();
+        temp = temp.substring(0, temp.length()-1);
+        return temp + ", Color:" + ((this.isRed())? "RED)" : "BLACK)");
     }
 }

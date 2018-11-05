@@ -161,6 +161,10 @@ public class Tree<K extends Comparable<K>, V> implements Comparable<K>{
         }
     }
 
+    public static<K extends Comparable<K>,V> Tree<K,V> getRoot(Tree<K,V> tree){
+        return (tree.getParent()==null)? tree : getRoot(tree.getParent());
+    }
+
     @Override
     public int compareTo(K key) {
         return this.getKey().compareTo(key);
