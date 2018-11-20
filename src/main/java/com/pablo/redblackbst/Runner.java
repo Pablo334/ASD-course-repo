@@ -5,7 +5,7 @@ import com.pablo.binarysearchtree.Tree;
 public class Runner {
     public static void main(String[] args){
         RedBlackTree<Integer, String> tree = new RedBlackTree<>(5,"Scemottina");
-        
+
         tree.insert(7, "Nom nom");
         tree.insert(125, "bitch");
         tree.insert(2, "dsfasfas");
